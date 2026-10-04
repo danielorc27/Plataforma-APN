@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.core',
     'apps.autenticacion',
+    'apps.empresa',
+    'apps.roles',
 ]
 
 AUTH_USER_MODEL = 'autenticacion.Usuario'

@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -39,6 +40,17 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField('nombre', max_length=150)
     apellido = models.CharField('apellido', max_length=150)
 
+    empresa = models.ForeignKey(
+        'empresa.Empresa',
+        verbose_name='empresa',
+        related_name='usuarios',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        help_text='Empresa (tenant) a la que pertenece el usuario. '
+                   'Vacío únicamente para administradores de plataforma (is_superuser=True).',
+    )
+
     is_active = models.BooleanField('activo', default=True)
     is_staff = models.BooleanField('acceso al admin', default=False)
 
@@ -57,8 +69,49 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def clean(self):
+        super().clean()
+        if not self.is_superuser and not self.empresa_id:
+            raise ValidationError(
+                {'empresa': 'Todo usuario debe pertenecer a una empresa, salvo los administradores de plataforma.'}
+            )
+
     def get_full_name(self):
         return f'{self.nombre} {self.apellido}'.strip()
 
     def get_short_name(self):
         return self.nombre
+
+    def has_permission(self, codigo):
+        """Verifica si el usuario cuenta con el permiso indicado.
+
+        SUPER_ADMIN_SISTEMA (is_superuser) omite la verificación de RBAC.
+        Los roles de un usuario siempre pertenecen a su propia empresa
+        (lo garantiza UsuarioRol), por lo que esta verificación nunca
+        cruza el límite de tenant.
+        """
+        if not self.is_active:
+            return False
+        if self.is_superuser:
+            return True
+
+        from apps.roles.models import EstadoPermiso, EstadoRol
+
+        roles_activos = self.roles.filter(estado=EstadoRol.ACTIVO)
+        if roles_activos.filter(es_administrador_principal=True).exists():
+            return True
+        return roles_activos.filter(
+            permisos__codigo=codigo,
+            permisos__estado=EstadoPermiso.ACTIVO,
+        ).exists()
+
+    @property
+    def es_administrador_empresa(self):
+        """Identifica a SUPER_ADMIN_EMPRESA: un usuario con un rol activo marcado
+        como administrador principal de su empresa."""
+        if not self.is_active:
+            return False
+
+        from apps.roles.models import EstadoRol
+
+        return self.roles.filter(estado=EstadoRol.ACTIVO, es_administrador_principal=True).exists()

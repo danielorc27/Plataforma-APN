@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ empresa.razon_social }} - FAC APN</title>
+</head>
+<body>
+    <h1>{{ empresa.razon_social }}</h1>
+    <p>Identificación: {{ empresa.get_tipo_identificacion_display }} {{ empresa.numero_identificacion }}</p>
+    <p>Estado: {{ empresa.get_estado_display }}</p>
+    <p>Dirección: {{ empresa.direccion|default:"-" }}</p>
+    <p>Municipio: {{ empresa.municipio|default:"-" }}</p>
+    <p>Teléfono: {{ empresa.telefono|default:"-" }}</p>
+    <p>Correo: {{ empresa.email|default:"-" }}</p>
+
+    <p><a href="{% url 'core:app_home' %}">Volver</a></p>
+</body>
+</html>

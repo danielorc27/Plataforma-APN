@@ -8,6 +8,15 @@
     <h1>Bienvenido, {{ user.nombre }} {{ user.apellido }}</h1>
     <p>Esta es una ruta protegida: solo usuarios autenticados pueden verla.</p>
 
+    <h2>Empresa actual</h2>
+    {% if empresa %}
+        <p>Nombre: {{ empresa.razon_social }}</p>
+        <p>Estado: {{ empresa.get_estado_display }}</p>
+        <p><a href="{% url 'empresa:detalle' empresa.pk %}">Ver detalle de la empresa</a></p>
+    {% else %}
+        <p>Este usuario no tiene una empresa asignada (administrador de plataforma).</p>
+    {% endif %}
+
     <form method="post" action="{% url 'autenticacion:logout' %}">
         {% csrf_token %}
         <button type="submit">Cerrar sesión</button>

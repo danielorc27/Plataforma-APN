@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios - FAC APN</title>
+</head>
+<body>
+    <h1>Usuarios de {{ request.user.empresa }}</h1>
+    <ul>
+        {% for usuario in usuarios %}
+            <li>{{ usuario.email }} - {{ usuario.get_full_name }}</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'core:app_home' %}">Volver</a></p>
+</body>
+</html>
