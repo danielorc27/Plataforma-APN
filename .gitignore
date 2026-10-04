@@ -1,0 +1,49 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# === Entornos virtuales ===
+.venv/
+venv/
+env/
+ENV/
+
+# === Variables de entorno / secretos ===
+.env
+.env.*
+!.env.example
+
+# === Django ===
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# === Bases de datos locales ===
+*.sqlite3
+*.sqlite3-journal
+
+# === Distribución / empaquetado ===
+build/
+dist/
+*.egg-info/
+
+# === IDEs / editores ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Sistema operativo ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Archivos temporales ===
+*.tmp
+*.bak
+*~
