@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>FAC APN</title>
+</head>
+<body>
+    <h1>Bienvenido, {{ user.nombre }} {{ user.apellido }}</h1>
+    <p>Esta es una ruta protegida: solo usuarios autenticados pueden verla.</p>
+
+    <form method="post" action="{% url 'autenticacion:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión</button>
+    </form>
+</body>
+</html>

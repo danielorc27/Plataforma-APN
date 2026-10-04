@@ -43,7 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.core',
+    'apps.autenticacion',
 ]
+
+AUTH_USER_MODEL = 'autenticacion.Usuario'
+
+LOGIN_URL = 'autenticacion:login'
+LOGIN_REDIRECT_URL = 'core:app_home'
+LOGOUT_REDIRECT_URL = 'core:home'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,6 +103,7 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'OPTIONS': {'user_attributes': ('email', 'nombre', 'apellido')},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
