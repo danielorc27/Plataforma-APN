@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cliente.nombre }} - FAC APN</title>
+</head>
+<body>
+    <h1>{{ cliente.nombre }}</h1>
+    <p>Identificación: {{ cliente.get_tipo_identificacion_display }} {{ cliente.numero_identificacion }}</p>
+    <p>Correo: {{ cliente.email|default:"-" }}</p>
+    <p>Teléfono: {{ cliente.telefono|default:"-" }}</p>
+    <p>Dirección: {{ cliente.direccion|default:"-" }}</p>
+
+    {% if puede_editar %}
+        <p><a href="{% url 'clientes:editar' cliente.pk %}">Editar</a></p>
+    {% endif %}
+    <p><a href="{% url 'clientes:lista' %}">Volver</a></p>
+</body>
+</html>

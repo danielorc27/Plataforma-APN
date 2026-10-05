@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos - FAC APN</title>
+</head>
+<body>
+    <h1>Productos</h1>
+
+    <form method="get">
+        <input type="text" name="q" value="{{ query }}" placeholder="Buscar por código o nombre">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if puede_crear %}
+        <p><a href="{% url 'productos:crear' %}">Nuevo producto</a></p>
+    {% endif %}
+
+    <ul>
+        {% for producto in productos %}
+            <li>
+                <a href="{% url 'productos:detalle' producto.pk %}">{{ producto.codigo }} - {{ producto.nombre }}</a>
+                — ${{ producto.precio }} — {{ producto.get_unidad_display }} — {{ producto.get_estado_display }}
+            </li>
+        {% empty %}
+            <li>No hay productos registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{% url 'core:app_home' %}">Volver</a></p>
+</body>
+</html>

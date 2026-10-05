@@ -8,4 +8,9 @@ def home(request):
 
 @login_required
 def app_home(request):
-    return render(request, 'core/app.html', {'empresa': request.user.empresa})
+    contexto = {
+        'empresa': request.user.empresa,
+        'puede_ver_clientes': request.user.has_permission('clientes.ver'),
+        'puede_ver_productos': request.user.has_permission('productos.ver'),
+    }
+    return render(request, 'core/app.html', contexto)

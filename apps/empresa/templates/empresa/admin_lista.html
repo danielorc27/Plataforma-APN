@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Empresas - FAC APN</title>
+</head>
+<body>
+    <h1>Empresas registradas</h1>
+    <p><a href="{% url 'empresa:admin_crear' %}">Crear empresa</a></p>
+    <ul>
+        {% for empresa in empresas %}
+            <li>
+                <a href="{% url 'empresa:admin_detalle' empresa.pk %}">{{ empresa.razon_social }}</a>
+                — {{ empresa.numero_identificacion }} ({{ empresa.get_estado_display }})
+            </li>
+        {% empty %}
+            <li>No hay empresas registradas.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'core:app_home' %}">Volver</a></p>
+</body>
+</html>

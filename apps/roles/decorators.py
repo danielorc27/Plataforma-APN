@@ -16,3 +16,15 @@ def permiso_requerido(codigo):
             return view_func(request, *args, **kwargs)
         return _wrapped
     return decorador
+
+
+def superadmin_sistema_requerido(view_func):
+    """Exige autenticación y is_superuser (SUPER_ADMIN_SISTEMA). Responde 403 si no lo es."""
+
+    @wraps(view_func)
+    @login_required
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied('Requiere privilegios de administrador de plataforma.')
+        return view_func(request, *args, **kwargs)
+    return _wrapped

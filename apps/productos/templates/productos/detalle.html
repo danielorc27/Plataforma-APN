@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ producto.nombre }} - FAC APN</title>
+</head>
+<body>
+    <h1>{{ producto.codigo }} - {{ producto.nombre }}</h1>
+    <p>Descripción: {{ producto.descripcion|default:"-" }}</p>
+    <p>Precio: ${{ producto.precio }}</p>
+    <p>Unidad: {{ producto.get_unidad_display }}</p>
+    <p>Impuesto: {{ producto.porcentaje_impuesto }}%</p>
+    <p>Estado: {{ producto.get_estado_display }}</p>
+
+    {% if puede_editar %}
+        <p><a href="{% url 'productos:editar' producto.pk %}">Editar</a></p>
+    {% endif %}
+
+    {% if producto.esta_activo and puede_desactivar %}
+        <form method="post" action="{% url 'productos:desactivar' producto.pk %}">
+            {% csrf_token %}
+            <button type="submit">Desactivar</button>
+        </form>
+    {% elif not producto.esta_activo and puede_activar %}
+        <form method="post" action="{% url 'productos:activar' producto.pk %}">
+            {% csrf_token %}
+            <button type="submit">Activar</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{% url 'productos:lista' %}">Volver</a></p>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear empresa - FAC APN</title>
+</head>
+<body>
+    <h1>Crear empresa</h1>
+    <form method="post">
+        {% csrf_token %}
+        <h2>Datos de la empresa</h2>
+        {{ empresa_form.as_p }}
+        <h2>Administrador principal</h2>
+        {{ admin_form.as_p }}
+        <button type="submit">Crear</button>
+    </form>
+    <p><a href="{% url 'empresa:admin_lista' %}">Cancelar</a></p>
+</body>
+</html>

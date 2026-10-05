@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'apps.autenticacion',
     'apps.empresa',
     'apps.roles',
+    'apps.clientes',
+    'apps.productos',
 ]
 
 AUTH_USER_MODEL = 'autenticacion.Usuario'

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ empresa.razon_social }} - FAC APN</title>
+</head>
+<body>
+    <h1>{{ empresa.razon_social }}</h1>
+    <p>Identificación: {{ empresa.get_tipo_identificacion_display }} {{ empresa.numero_identificacion }}</p>
+    <p>Dirección: {{ empresa.direccion|default:"-" }}</p>
+    <p>Municipio: {{ empresa.municipio|default:"-" }}</p>
+    <p>Teléfono: {{ empresa.telefono|default:"-" }}</p>
+    <p>Correo: {{ empresa.email|default:"-" }}</p>
+    <p>Estado: {{ empresa.get_estado_display }}</p>
+
+    <form method="post" action="{% if empresa.esta_activa %}{% url 'empresa:admin_desactivar' empresa.pk %}{% else %}{% url 'empresa:admin_activar' empresa.pk %}{% endif %}">
+        {% csrf_token %}
+        <button type="submit">{% if empresa.esta_activa %}Desactivar{% else %}Activar{% endif %}</button>
+    </form>
+
+    <p><a href="{% url 'empresa:admin_lista' %}">Volver</a></p>
+</body>
+</html>

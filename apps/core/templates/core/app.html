@@ -12,9 +12,21 @@
     {% if empresa %}
         <p>Nombre: {{ empresa.razon_social }}</p>
         <p>Estado: {{ empresa.get_estado_display }}</p>
-        <p><a href="{% url 'empresa:detalle' empresa.pk %}">Ver detalle de la empresa</a></p>
+        <p><a href="{% url 'empresa:ver' %}">Ver mi empresa</a></p>
     {% else %}
         <p>Este usuario no tiene una empresa asignada (administrador de plataforma).</p>
+    {% endif %}
+
+    {% if user.is_superuser %}
+        <p><a href="{% url 'empresa:admin_lista' %}">Administrar empresas (plataforma)</a></p>
+    {% endif %}
+
+    {% if puede_ver_clientes %}
+        <p><a href="{% url 'clientes:lista' %}">Clientes</a></p>
+    {% endif %}
+
+    {% if puede_ver_productos %}
+        <p><a href="{% url 'productos:lista' %}">Productos</a></p>
     {% endif %}
 
     <form method="post" action="{% url 'autenticacion:logout' %}">

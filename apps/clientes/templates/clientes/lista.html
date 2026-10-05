@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes - FAC APN</title>
+</head>
+<body>
+    <h1>Clientes</h1>
+
+    <form method="get">
+        <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre o identificación">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if puede_crear %}
+        <p><a href="{% url 'clientes:crear' %}">Nuevo cliente</a></p>
+    {% endif %}
+
+    <ul>
+        {% for cliente in clientes %}
+            <li>
+                <a href="{% url 'clientes:detalle' cliente.pk %}">{{ cliente.nombre }}</a>
+                — {{ cliente.get_tipo_identificacion_display }} {{ cliente.numero_identificacion }}
+                — {{ cliente.email|default:"-" }} — {{ cliente.telefono|default:"-" }}
+            </li>
+        {% empty %}
+            <li>No hay clientes registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{% url 'core:app_home' %}">Volver</a></p>
+</body>
+</html>

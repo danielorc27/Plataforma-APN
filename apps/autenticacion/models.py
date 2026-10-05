@@ -89,11 +89,17 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
         Los roles de un usuario siempre pertenecen a su propia empresa
         (lo garantiza UsuarioRol), por lo que esta verificación nunca
         cruza el límite de tenant.
+
+        Una empresa INACTIVA bloquea todas las operaciones de sus usuarios
+        de negocio; SUPER_ADMIN_SISTEMA conserva el bypass para poder
+        seguir administrándola.
         """
         if not self.is_active:
             return False
         if self.is_superuser:
             return True
+        if self.empresa_id and not self.empresa.esta_activa:
+            return False
 
         from apps.roles.models import EstadoPermiso, EstadoRol
 
